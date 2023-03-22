@@ -13,13 +13,13 @@
 
 class Motor {
 public:
-  Motor(int8_t pinDirection, int8_t pinInput);
+  Motor(int8_t _pinDirection, int8_t _pinInput);
   void revers();
-  void revers(int value);
-  void setRevers(int8_t revers);
+  void revers(int _value);
+  void setRevers(int8_t _revers);
   void stop();
-  void writeMotor(int value);
-  void writeMotor(int8_t revers, int value);
+  void writeMotor(int _value);
+  void writeMotor(int _value, int8_t _revers);
   int8_t getRevers();
   int getValue();
 private:
@@ -28,6 +28,30 @@ private:
   int8_t reverse = STOP;
   int8_t anty_reverse = 1;
   int value = MIN_VALUE;
+};
+
+class WriteMotor {
+public:
+  void begin(int8_t _pinDirection1, int8_t _pinInput1, int8_t _pinDirection2, int8_t _pinInput2);
+  void revers();
+  void revers(int value);
+  void revers(int8_t motor);
+  void revers(int8_t motor, int value);
+  void setRevers(int8_t revers);
+  void setRevers(int8_t motor, int8_t revers);
+  void stop();
+  void stop(int8_t motor);
+  void writeMotor(int value);
+  void writeMotor(int8_t motor, int value);
+  void writeMotor(int8_t motor, int value, int8_t revers);
+  int8_t getRevers(int8_t motor);
+  int getValue(int8_t motor);
+  Motor getMotor(int8_t motor);
+  Motor getMotor1();
+  Motor getMotor2();
+private:
+  Motor motor1;
+  Motor motor2;
 };
 
 #endif
