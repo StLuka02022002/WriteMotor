@@ -11,8 +11,13 @@
 #define MIN_VALUE 0
 #define MAX_VALUE 255
 
+class WriteMotor;
+
+class Motor;
+
 class Motor {
 public:
+  Motor() = default;
   Motor(int8_t _pinDirection, int8_t _pinInput);
   void revers();
   void revers(int _value);
@@ -25,14 +30,15 @@ public:
 private:
   int8_t pinDirection;
   int8_t pinInput;
-  int8_t reverse = STOP;
+  int8_t reverse = FORWARD;
   int8_t anty_reverse = 1;
   int value = MIN_VALUE;
+  int getValueLimit(int value);
 };
 
 class WriteMotor {
 public:
-  void begin(int8_t _pinDirection1, int8_t _pinInput1, int8_t _pinDirection2, int8_t _pinInput2);
+  WriteMotor(int8_t _pinDirection1, int8_t _pinInput1, int8_t _pinDirection2, int8_t _pinInput2);
   void revers();
   void revers(int value);
   void revers(int8_t motor);

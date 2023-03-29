@@ -1,6 +1,4 @@
-#include "HardwareSerial.h"
 #include "Arduino.h"
-#include <stdint.h>
 #include "WriteMotor.h"
 
 Motor::Motor(int8_t _pinDirection, int8_t _pinInput) {
@@ -34,10 +32,10 @@ void Motor::writeMotor(int value) {
 void Motor::writeMotor(int value, int8_t revers) {
   if (revers * anty_reverse > 0) {
     reverse = FORWARD;
-    analogWrite(pinInput, constrain(value, MIN_VALUE, MAX_VALUE));
+    analogWrite(pinInput, getValueLimit(value));
   } else if (revers * anty_reverse < 0) {
     reverse = BACK;
-    analogWrite(pinInput, MAX_VALUE - constrain(value, MIN_VALUE, MAX_VALUE));
+    analogWrite(pinInput, MAX_VALUE - getValueLimit(value));
   } else {
     reverse = STOP;
     analogWrite(pinInput, MIN_VALUE);
@@ -46,6 +44,9 @@ void Motor::writeMotor(int value, int8_t revers) {
   reverse *= anty_reverse;
 }
 
+int Motor::getValueLimit(int value) {
+  return constrain(value, MIN_VALUE, MAX_VALUE);
+}
 int8_t Motor::getRevers() {
   return reverse;
 }
@@ -54,7 +55,7 @@ int Motor::getValue() {
   return value;
 }
 
-void WriteMotor::begin(int8_t _pinDirection1, int8_t _pinInput1, int8_t _pinDirection2, int8_t _pinInput2) {
+WriteMotor::WriteMotor(int8_t _pinDirection1, int8_t _pinInput1, int8_t _pinDirection2, int8_t _pinInput2) {
   motor1 = Motor(_pinDirection1, _pinInput1);
   motor2 = Motor(_pinDirection2, _pinInput2);
 }
@@ -133,6 +134,15 @@ int8_t WriteMotor::getRevers(int8_t motor) {
   if (motor == MOTOR2)
     revers = motor2.getRevers();
   return revers;
+}
+
+int WriteMotor::getValue(int8_t motor) {
+  int value = 0;
+  if (motor == MOTOR1)
+    value = motor1.getValue();
+  if (motor == MOTOR2)
+    value = motor2.getValue();
+  return value;
 }
 
 Motor WriteMotor::getMotor1() {
